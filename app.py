@@ -40,9 +40,9 @@ label_mapping = {
 def main():
     return redirect(url_for('home'))
 
-'''@app.route('/welcome')
+@app.route('/welcome')
 def welcome():
-    return render_template('welcome.html')'''
+    return render_template('welcome.html')
 
 @app.route('/home')
 def home():
@@ -104,7 +104,7 @@ def register():
 def logout():
     session.clear()
     flash("Logged out successfully.", "info")
-    return redirect(url_for('login'))
+    return redirect(url_for('welcome'))
 
 # ------------------------- PREDICTION -------------------------
 
@@ -271,3 +271,4 @@ def forgot_password():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
