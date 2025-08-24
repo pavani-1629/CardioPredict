@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CardioPredict | Profile</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #021E3D, #0B6E4F);
+      color: white;
+    }
+
+    nav.top-nav {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px 30px;
+      align-items: center;
+      border-bottom: 1px solid #ffffff25;
+    }
+
+    nav.top-nav a {
+      color: #FFD700;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    nav.top-nav a.active {
+      border-bottom: 2px solid #FFD700;
+    }
+
+    .container {
+      padding: 50px 20px 100px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #FFD700;
+      margin-bottom: 30px;
+    }
+
+    .profile-card {
+      max-width: 500px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 30px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+
+    .profile-item {
+      margin-bottom: 15px;
+    }
+
+    .profile-item strong {
+      color: #FFD700;
+    }
+
+    footer.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.07);
+      border-top: 1px solid #ffffff25;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+    }
+
+    footer.bottom-nav a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    footer.bottom-nav a.active {
+      color: #FFD700;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div><strong>CardioPredict</strong></div>
+    <div>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('profile') }}" class="active">Profile</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Profile Content -->
+  <div class="container">
+    <h1>👤 My Profile</h1>
+    <div class="profile-card">
+      <div class="profile-item"><strong>Username:</strong> {{ user.username }}</div>
+      <div class="profile-item"><strong>Email:</strong> {{ user.email }}</div>
+      {% if user.age %}
+      <div class="profile-item"><strong>Age:</strong> {{ user.age }}</div>
+      {% endif %}
+      {% if user.gender %}
+      <div class="profile-item"><strong>Gender:</strong> {{ user.gender }}</div>
+      {% endif %}
+      {% if user.phone %}
+      <div class="profile-item"><strong>Phone:</strong> {{ user.phone }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <footer class="bottom-nav">
+    <a href="{{ url_for('home') }}">
+      <span>🏠</span>
+      Home
+    </a>
+    <a href="{{ url_for('index') }}">
+      <span>💡</span>
+      Predict
+    </a>
+    <a href="{{ url_for('todo') }}">
+      <span>🕒</span>
+      Care
+    </a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Care Reminder - CardioPredict</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #021E3D, #0B6E4F);
+      color: white;
+      padding-bottom: 80px;
+    }
+
+    nav.top-nav {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      padding: 15px 30px;
+      align-items: center;
+      border-bottom: 1px solid #ffffff25;
+    }
+
+    nav.top-nav a {
+      color: #FFD700;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav.top-nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #FFD700;
+      border-radius: 4px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      color: #FFD700;
+      margin-bottom: 25px;
+    }
+
+    form {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="time"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      flex: 1;
+      font-size: 1rem;
+    }
+
+    button {
+      background: linear-gradient(135deg, #FFD700, #FF8C00);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: #1a1a1a;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #FFC400, #FF6B00);
+      transform: scale(1.03);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: rgba(255,255,255,0.1);
+      padding: 12px 18px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1rem;
+    }
+
+    .delete-btn {
+      background: transparent;
+      border: none;
+      color: #FF6B6B;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    footer.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.07);
+      border-top: 1px solid #ffffff25;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+    }
+
+    footer.bottom-nav a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    footer.bottom-nav a.active {
+      color: #FFD700;
+      font-weight: bold;
+    }
+  </style>
+
+  <script>
+    function formatTimeTo12Hour(timeStr) {
+      const [hour, minute] = timeStr.split(":");
+      const date = new Date();
+      date.setHours(hour);
+      date.setMinutes(minute);
+      const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+      return date.toLocaleString('en-US', options);
+    }
+
+    function addTask() {
+      const taskInput = document.getElementById("taskInput");
+      const timeInput = document.getElementById("timeInput");
+      const taskList = document.getElementById("taskList");
+
+      if (taskInput.value.trim() && timeInput.value) {
+        const formattedTime = formatTimeTo12Hour(timeInput.value);
+        const li = document.createElement("li");
+        li.innerHTML = `
+          🕒 <strong>${formattedTime}</strong> - ${taskInput.value}
+          <button class="delete-btn" onclick="this.parentElement.remove()">✖</button>
+        `;
+        taskList.appendChild(li);
+        taskInput.value = "";
+        timeInput.value = "";
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- 🔝 Top Navigation -->
+  <nav class="top-nav">
+    <div><strong>CardioPredict</strong></div>
+    <div>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('todo') }}" class="active">Care</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Reminder Section -->
+  <div class="container">
+    <h2>🕒 Care Reminder</h2>
+    <form onsubmit="event.preventDefault(); addTask();">
+      <input type="text" id="taskInput" placeholder="e.g. Take medicine, walk, check BP..." required>
+      <input type="time" id="timeInput" required>
+      <button type="submit">➕ Add</button>
+    </form>
+    <ul id="taskList"></ul>
+  </div>
+
+  <!-- 🔻 Bottom Navigation -->
+  <footer class="bottom-nav">
+    <a href="{{ url_for('home') }}">
+      <span>🏠</span>
+      Home
+    </a>
+    <a href="{{ url_for('index') }}">
+      <span>💡</span>
+      Predict
+    </a>
+    <a href="{{ url_for('todo') }}" class="active">
+      <span>🕒</span>
+      Care
+    </a>
+  </footer>
+
+</body>
+</html>
